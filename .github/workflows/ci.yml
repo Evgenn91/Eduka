@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI/CD with Maven and Docker
 
 on:  # это когда будет запускаться jobs
   push:
@@ -7,8 +7,7 @@ on:  # это когда будет запускаться jobs
     branches: [ "main" ]
 
 jobs:  # что делаем когде сработает условие из on
-  build: # имя job(можно написать любое)
-
+  build: # имя job(можно написать любое) CI job — сборка и тесты
     runs-on: ubuntu-latest   # Виртуальная машина, на которой будет выполняться шаги
 
     steps:                   # Последовательность шагов в одном job
@@ -27,6 +26,26 @@ jobs:  # что делаем когде сработает условие из o
       - name: Build jar and test
         run: ./mvnw clean install
 
+      - name: Archive JAR for deploy job
+        uses: actions/upload-artifact@v3
+        with:
+          name: eduka-jar
+          path: target/eduka-0.0.1-SNAPSHOT.jar
+
+  deploy:  # CD job — пуш Docker и деплой
+    needs: build  # ждем окончания сборки
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: eduka-jar
+          path: ./target
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -38,6 +57,7 @@ jobs:  # что делаем когде сработает условие из o
           docker build -t evgenn4ke/eduka:latest .
           docker push evgenn4ke/eduka:latest
 
+# Если хочешь сразу деплой на сервер, раскомментируй и настроь:
 #      - name: Deploy to VPS via SSH
 #        uses: appleboy/ssh-action@v1.0.0
 #        with:
