@@ -15,6 +15,9 @@ jobs:  # что делаем когде сработает условие из o
       - name: Checkout code   #скачивает код
         uses: actions/checkout@v4
 
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
