@@ -2,7 +2,7 @@ name: Deploy on main push
 
 on:
   workflow_run:
-    workflows: ["Java CI/CD with Maven and Docker"]
+    workflows: ["Java CI with Maven"]
     types:
       - completed
 
@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.
 
       - name: Download artifact from build workflow
         uses: actions/download-artifact@v4
