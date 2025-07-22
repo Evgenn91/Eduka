@@ -2,7 +2,7 @@ name: Deploy on main push
 
 on:
   workflow_run:
-    workflows: ["Java CI/CD with Maven and Docker"]
+    workflows: ["Java CI with Maven"]
     types:
       - completed
 

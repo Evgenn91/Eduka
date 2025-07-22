@@ -1,4 +1,4 @@
-name: Java CI/CD with Maven and Docker
+name: Java CI with Maven
 
 on:  # это когда будет запускаться jobs
   push:
@@ -26,7 +26,7 @@ jobs:  # что делаем когде сработает условие из o
       - name: Build jar and test
         run: ./mvnw clean install
 
-      - name: Archive JAR for deploy job
+      - name: Archive JAR for deploy job # сохранили в github actions чтобы можно было его скачать или передать в другие workflows
         uses: actions/upload-artifact@v4
         with:
           name: eduka-jar
