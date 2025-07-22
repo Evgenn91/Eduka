@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:  # это когда будет запускаться jobs
   push:
-    branches: [ "develop", "feature/*" ]
+    branches: [ "develop", "feature/*" , "main" ]
   pull_request:
     branches: [ "main" ]
 
