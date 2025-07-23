@@ -7,12 +7,20 @@ on:
     branches: [ "main" ]
 
 jobs:
-  CI: # имя
+  CI:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code   #скачивает код
         uses: actions/checkout@v4
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - name: Make mvnw executable
         run: chmod +x ./mvnw
@@ -30,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: eduka-jar
-          path: target/eduka-0.0.1-SNAPSHOT.jar
+          path: target/*.jar  # было eduka-0.0.1-SNAPSHOT.jar и вопрос, может ли быть 2 jar у меня, если может, то придется сделать полное название
 
   CD:
     needs: CI                               # запускается после CI
